@@ -1,17 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
-
 import { useAppDispatch, useAppSelector } from "@store/app/hooks";
-
 import actGetCountryDetails from "@store/countries/act/actGetCountryDetails";
 
 const CountryDetailsPage = () => {
   const { code } = useParams();
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
   const { country, loading, error } = useAppSelector(
     (state) => state.countryDetails
@@ -22,37 +18,8 @@ const CountryDetailsPage = () => {
       navigate("/");
       return;
     }
-
     dispatch(actGetCountryDetails(code));
   }, [code, dispatch, navigate]);
-
-  // Render loading state
-  if (loading === "pending") {
-    return (
-      <div className="text-center py-10 text-lg" aria-live="polite">
-        Loading country details...
-      </div>
-    );
-  }
-
-  // Render error state
-  if (error) {
-    return (
-      <div
-        className="text-center py-10 text-red-500 text-lg"
-        role="alert"
-        aria-live="assertive"
-      >
-        Error: {error}
-        <button
-          className="ml-4 underline hover:text-red-700 cursor-pointer"
-          onClick={() => code && dispatch(actGetCountryDetails(code))}
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
 
   // Render no data state
   if (!country) {
@@ -64,7 +31,7 @@ const CountryDetailsPage = () => {
   }
 
   return (
-    <div className=" text-black dark:text-white py-6">
+    <div className="text-black dark:text-white py-6">
       {/* Back Button */}
       <button
         className="dark:bg-blue-900 flex items-center space-x-2 px-10 py-3 rounded shadow-[0px_0px_8px_0px_rgba(0,0,0,0.4)] cursor-pointer font-light"
@@ -73,6 +40,30 @@ const CountryDetailsPage = () => {
         <FontAwesomeIcon icon={faArrowLeftLong} />
         <span>Back</span>
       </button>
+
+      {/* Loading and Error Messages */}
+      <div className="mt-20">
+        {loading === "pending" && (
+          <div className="text-center py-4 text-lg" aria-live="polite">
+            Loading country details...
+          </div>
+        )}
+        {error && (
+          <div
+            className="text-center py-4 text-red-500 text-lg"
+            role="alert"
+            aria-live="assertive"
+          >
+            Error: {error}
+            <button
+              className="ml-4 underline hover:text-red-700 cursor-pointer"
+              onClick={() => code && dispatch(actGetCountryDetails(code))}
+            >
+              Retry
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* Country Details Section */}
       <div className="mt-20 flex flex-col lg:flex-row gap-4 md:gap-30">
@@ -108,14 +99,13 @@ const CountryDetailsPage = () => {
               </p>
               <p>
                 <span className="font-semibold">Region: </span>
-                <span className="text-grey-400 dark:text-[#ded7d7]">
+                < span className="text-grey-400 dark:text-[#ded7d7]">
                   {country.region}
                 </span>
               </p>
               <p>
                 <span>Sub Region: </span>{" "}
                 <span className="text-grey-400 dark:text-[#ded7d7]">
-                  {" "}
                   {country.subregion}
                 </span>
               </p>
