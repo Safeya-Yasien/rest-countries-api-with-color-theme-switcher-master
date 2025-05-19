@@ -18,6 +18,7 @@ export default defineConfig({
       "@types": path.resolve(__dirname, "./src/types"),
       "@assets": path.resolve(__dirname, "./src/assets"),
       "@services": path.resolve(__dirname, "./src/services"),
+      "@skeletons": path.resolve(__dirname, "./src/skeletons"),
 
     },
   },

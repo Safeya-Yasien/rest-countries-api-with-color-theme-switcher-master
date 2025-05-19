@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@store/app/hooks";
 import actGetAllCountries from "@store/countries/act/actGetAllCountries";
 
 import { Country, FilterByRegion, SearchByCountryName } from "@/components";
+import { CountrySkeleton } from "@/components/skeletons";
 
 import type { TCountry } from "@/types";
 
@@ -28,8 +29,14 @@ const Home = () => {
       </div>
       <section className="mt-10 px-10 md:px-0">
         {loading === "pending" && (
-          <div className="text-center text-gray-600 animate-pulse">
-            Loading countries...
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+            aria-live="polite"
+            aria-busy="true"
+          >
+            {Array.from({ length: 8 }).map((_, index) => (
+              <CountrySkeleton key={index} />
+            ))}
           </div>
         )}
         {loading === "failed" && (

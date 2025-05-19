@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
 import { useAppDispatch, useAppSelector } from "@store/app/hooks";
 import actGetCountryDetails from "@store/countries/act/actGetCountryDetails";
+import { CountryDetailsSkeleton } from "@/components/skeletons";
 
 const CountryDetailsPage = () => {
   const { code } = useParams();
@@ -18,6 +19,7 @@ const CountryDetailsPage = () => {
       navigate("/");
       return;
     }
+
     dispatch(actGetCountryDetails(code));
   }, [code, dispatch, navigate]);
 
@@ -26,6 +28,7 @@ const CountryDetailsPage = () => {
       {/* Back Button */}
       <button
         className="dark:bg-blue-900 flex items-center space-x-2 px-10 py-3 rounded shadow-[0px_0px_8px_0px_rgba(0,0,0,0.4)] cursor-pointer font-light"
+        aria-label="Go back to previous page"
         onClick={() => navigate(-1)}
       >
         <FontAwesomeIcon icon={faArrowLeftLong} />
@@ -34,11 +37,7 @@ const CountryDetailsPage = () => {
 
       {/* Loading and Error States */}
       <div className="mt-8">
-        {loading === "pending" && (
-          <div className="text-center py-4 text-lg" aria-live="polite">
-            Loading country details...
-          </div>
-        )}
+        {loading === "pending" && <CountryDetailsSkeleton />}
 
         {error && (
           <div
@@ -48,7 +47,7 @@ const CountryDetailsPage = () => {
           >
             Error: {error}
             <button
-              className="ml-4 underline hover:text-red-700 cursor-pointer"
+              className="ml-4 px-4 py-1 bg-red-100 hover:bg-red-200 dark:bg-red-800 dark:hover:bg-red-700 rounded text-red-600 dark:text-white"
               onClick={() => code && dispatch(actGetCountryDetails(code))}
             >
               Retry
@@ -66,7 +65,7 @@ const CountryDetailsPage = () => {
               <img
                 className="w-full h-full object-cover"
                 src={country.flag}
-                alt={country.name}
+                alt={`Flag of ${country.name}`}
               />
             </div>
           </div>
