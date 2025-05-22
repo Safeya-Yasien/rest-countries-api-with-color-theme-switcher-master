@@ -2,9 +2,10 @@ import { useEffect } from "react";
 
 import { faMoon } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useAppDispatch, useAppSelector } from "@/store/app/hooks";
-import { toggleTheme } from "@/store/theme/themeSlice";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
+
+import { toggleTheme } from "@/store/theme/themeSlice";
+import { useAppDispatch, useAppSelector } from "@/store/app/hooks";
 
 const ThemeSwitcher = () => {
   const theme = useAppSelector((state) => state.theme.theme);
@@ -18,7 +19,8 @@ const ThemeSwitcher = () => {
     }
   }, [theme]);
 
-  const icon = theme === "light" ? faSun : faMoon;
+  const nextTheme = theme === "dark" ? "light" : "dark";
+  const icon = nextTheme === "dark" ? faMoon : faSun;
 
   return (
     <button
@@ -27,7 +29,7 @@ const ThemeSwitcher = () => {
       onClick={() => dispatch(toggleTheme())}
     >
       <FontAwesomeIcon icon={icon} />
-      <span className="capitalize">{theme} Mode </span>
+      <span className="capitalize">{nextTheme} Mode </span>
     </button>
   );
 };
